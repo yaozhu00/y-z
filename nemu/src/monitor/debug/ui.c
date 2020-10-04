@@ -40,7 +40,7 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args);
 
-
+static int cmd_info(char *args);
 static struct {
 	char *name;
 	char *description;
@@ -50,7 +50,7 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
         { "si","Let the program execute n steps",cmd_si },
-     
+        { "info","Print the register status and the watchpoint information",cmd_info },
 	/* TODO: Add more commands */
 
 };
@@ -68,6 +68,29 @@ static int cmd_si(char *args)
          return 0;
         }
 
+static int cmd_info(char * args)
+       {
+        if (args==NULL)
+         printf("Please input the info r or info w\n");
+        else 
+        {
+          if (strcmp(args, "r")==0)
+           {printf("eax: 0x%-10x  %-10d\n",cpu.eax, cpu.eax);
+            printf("edx: 0x%-10x  %-10d\n", cpu.edx,cpu.edx);
+            printf("ecx: 0x%-10x  %-10d\n", cpu.ecx,cpu.ecx);
+            printf("ebx: 0x%-10x  %-10d\n",cpu.ebx,cpu.ebx);
+            printf("ebp: 0x%-10x  %-10d\n",cpu.ebp,cpu.ebp);
+            printf("esi: 0x%-10x  %-10d\n",cpu.esi,cpu.esi);
+            printf("edi: 0x%-10x  %-10d\n",cpu.edi ,cpu.edi);
+            printf("esp: 0x%-10x  %-10d\n",cpu.esp,cpu.esp);
+           }
+         else 
+           printf("The info command need a parameter 'r'or'w'\n");
+       } 
+       return 0;
+      }
+
+      
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
 static int cmd_help(char *args) {
