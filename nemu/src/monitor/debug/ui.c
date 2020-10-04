@@ -62,7 +62,7 @@ static int cmd_si(char *args)
            {steps=1;
            }
           else {
-            steps=atoi(strtok(NULL," "));
+            steps=atoi(strtok(args," "));
            }
          cpu_exec(steps);
          return 0;
