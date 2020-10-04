@@ -41,6 +41,8 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 
 static int cmd_info(char *args);
+
+static int cmd_x(char *args);
 static struct {
 	char *name;
 	char *description;
@@ -51,6 +53,8 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
         { "si","Let the program execute n steps",cmd_si },
         { "info","Print the register status and the watchpoint information",cmd_info },
+        { "x","Calculate the value of the expression and display the content of the address",cmd_x},
+
 	/* TODO: Add more commands */
 
 };
@@ -90,7 +94,31 @@ static int cmd_info(char * args)
        return 0;
       }
 
-      
+static int cmd_x(char* args)
+      {
+      if (args==NULL)
+         printf("Please input invalid command\n");
+      else 
+       {  
+          char *arg1=strtok(NULL," ");
+          char *arg2=strtok(NULL," ");
+          int len,i;
+          int addr;
+
+          sscanf(arg1,"%d",&len);
+          sscanf(arg2,"%x",&addr);
+
+          printf("0x%x:",addr);
+          for (i=0;i<len;i++)
+         {
+             printf("%x",lnaddr_read(addr,4));
+             addr+=4; 
+             printf("\n");
+         }
+       }
+         return 0;
+      }
+            
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
 static int cmd_help(char *args) {
