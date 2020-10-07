@@ -42,6 +42,8 @@ static int cmd_si(char *args);
 
 static int cmd_info(char *args);
 
+static int cmd_p(char *args);
+
 static int cmd_x(char *args);
 static struct {
 	char *name;
@@ -54,7 +56,7 @@ static struct {
         { "si","Let the program execute n steps",cmd_si },
         { "info","Print the register status and the watchpoint information",cmd_info },
         { "x","Calculate the value of the expression and display the content of the address",cmd_x},
-
+        { "p","Calculate the expression",cmd_p},
 	/* TODO: Add more commands */
 
 };
@@ -119,6 +121,22 @@ static int cmd_x(char* args)
          return 0;
       }
             
+static int cmd_p(char *args)
+      {
+        if (args==NULL)
+           printf("Input the expression.\n");
+        else 
+       {
+           init_regex();
+           bool success=true;
+           int result =expr(args,&success);
+           if (success)
+             printf("result=%d\n",result);
+           else 
+             printf("Invalid expression.\n");
+       }
+       return 0;
+      }
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
 static int cmd_help(char *args) {

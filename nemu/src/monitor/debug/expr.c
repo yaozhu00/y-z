@@ -114,6 +114,32 @@ static bool make_token(char *e) {
 	return true; 
 }
 
+bool check_parentheses(int p,int q)
+        {
+         int i,tag=0;   
+         if (tokens[p].type!=LBRACKET||tokens[q].type!=RKRACKET)
+              return false;
+         for (i=p;i<=q;i++)
+         {
+           if (tokens[i].type==LBRACKET)
+             tag++;
+           else if (tokens[i].type==BRACKET)
+             tag--;
+           if (tag==0&&i<q)return false;
+         }
+        if (tag==0)
+          return true;
+        else return false;
+        }
+
+int dominant operator(int p,int q)
+       {
+         int pos=p,num=0,tag;
+         for (int i=p;i<=q;i++)
+         {
+          	 if (tokens[i].type==LBRACKET)
+            	 tag=1;
+	         else if(
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
