@@ -16,21 +16,22 @@ enum {
 static struct rule {
 	char *regex;
 	int token_type;
+	int priority;
 } rules[] = {
 
 	/* TODO: Add more rules.
 	 * Pay attention to the precedence level of different rules.
 	 */
 
-	{" +",	NOTYPE},				// spaces
-	{"+",PLUS},					// plus
+	{" +",	NOTYPE,0},				// spaces
+	{"+",PLUS,1},					// plus
 	{"==", EQ},						// equal
-        {"-",REDUCE},
-        {"*",MULTI},
-        {"/",DIVID},
+        {"-",REDUCE,0},
+        {"*",MULTI,1},
+        {"/",DIVID,1},
         {"(",LBRACKET},
         {")",RBRACKET},
-        {"^[1-9][0-9]*|0$",NUM10}
+        {"^[1-9][0-9]*|0$",NUM10,0}
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -57,6 +58,7 @@ void init_regex() {
 typedef struct token {
 	int type;
 	char str[32];
+	int priority;
 } Token;
 
 Token tokens[32];
@@ -117,13 +119,13 @@ static bool make_token(char *e) {
 bool check_parentheses(int p,int q)
         {
          int i,tag=0;   
-         if (tokens[p].type!=LBRACKET||tokens[q].type!=RKRACKET)
+         if (tokens[p].type!=LBRACKET||tokens[q].type!=RBRACKET)
               return false;
          for (i=p;i<=q;i++)
          {
            if (tokens[i].type==LBRACKET)
              tag++;
-           else if (tokens[i].type==BRACKET)
+           else if (tokens[i].type==RBRACKET)
              tag--;
            if (tag==0&&i<q)return false;
          }
@@ -132,14 +134,35 @@ bool check_parentheses(int p,int q)
         else return false;
         }
 
-int dominant operator(int p,int q)
+int dominant_operator(int p,int q)
        {
-         int pos=p,num=0,tag;
-         for (int i=p;i<=q;i++)
+        int i, pos=p,left=0;
+	int min_priority=10;
+        for (i=p;i<=q;i++)
          {
           	 if (tokens[i].type==LBRACKET)
-            	 tag=1;
-	         else if(
+                 {
+        	        left+=1;
+			i++;
+	        	while (0){
+			if (tokens[i].type==LBRACKET)
+				left+=1;
+			else if (tokens[i].type==RBRACKET)
+				left-=1;
+			i++;
+			if (left==0) break;
+				}
+			if (i>q)break;
+		}
+		else if (tokens[i].type==NUM10) continue;
+		else if (tokens[i].priority<=min_priority)
+		{
+			min_priority=tokens[i].priority;
+			pos=i;
+		}
+	}
+	return pos;
+	}
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;

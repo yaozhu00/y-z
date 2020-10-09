@@ -127,16 +127,16 @@ static int cmd_p(char *args)
            printf("Input the expression.\n");
         else 
        {
-           init_regex();
+           int num;
            bool success=true;
-           int result =expr(args,&success);
+           num =expr(args,&success);
            if (success)
-             printf("result=%d\n",result);
+             printf("result=%d\n",num);
            else 
              printf("Invalid expression.\n");
        }
        return 0;
-      }
+	}
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
 static int cmd_help(char *args) {
