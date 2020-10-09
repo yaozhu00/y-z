@@ -163,6 +163,38 @@ int dominant_operator(int p,int q)
 	}
 	return pos;
 	}
+int eval(int p,int q)
+{
+	if (p>q)
+	{
+		Assert(p>q,"something happened!\n");
+		return 0;
+	}
+	else if (p==q)
+	{
+	}
+	else if (check_parentheses(p,q)==true)
+	{
+		return eval(p+1,q-1);
+	}
+	else
+	{
+		op=the position of dominant operator in token expression;
+		val1=eval(p,op-1);
+		val2=eval(op+1,q);
+
+		switch(op_type)
+		{
+			case '+': return val1+val2;
+			case '-': return val1-val2;
+			case '*': return val1*val2;
+			case '/': return val1/val2;
+			case EQ: return val1==val2;
+			case 
+			default:assert(0);
+		}
+	}
+}
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
