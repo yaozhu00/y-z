@@ -24,13 +24,13 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE,0},				// spaces
-	{"+",PLUS,1},					// plus
+	{"\\+",PLUS,1},					// plus
 	{"==", EQ},						// equal
         {"-",REDUCE,0},
-        {"*",MULTI,1},
-        {"/",DIVID,1},
-        {"(",LBRACKET},
-        {")",RBRACKET},
+        {"\\*",MULTI,1},
+        {"\\/",DIVID,1},
+        {"\\(",LBRACKET},
+        {"\\)",RBRACKET},
         {"^[1-9][0-9]*|0$",NUM10,0}
 };
 
