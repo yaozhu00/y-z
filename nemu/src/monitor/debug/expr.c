@@ -94,15 +94,14 @@ static bool make_token(char *e) {
 					case '*':
 					case '/':
 					case NUM10:
-                       			{
+                       			default:
                                              tokens[nr_token].type=rules[i].token_type;
 					     tokens[nr_token].priority=rules[i].priority;
                                              strncpy(tokens[nr_token].str,tmp,substr_len);
                                              tokens[nr_token].str[substr_len]='\0';
 					     nr_token++;
-					}
-                                   default:panic("please implement me");
 				}
+				position+=substr_len;
 				break;
 			}
 		}
