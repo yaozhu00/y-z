@@ -137,32 +137,34 @@ bool check_parentheses(int p,int q)
 
 int dominant_operator(int p,int q)
        {
-        int i, pos=p,left=0;
+        int i, j,oper=p;
 	int min_priority=10;
         for (i=p;i<=q;i++)
          {
-          	 if (tokens[i].type=='(')
-                 {
-        	        left+=1;
-			i++;
-	        	while (1){
+		if (tokens[i].type==NUM10)
+			continue;
+		int cnt=0;
+		bool key=true;
+		for (j=i-1;j>=p;j--)
+		{
+          		 if (tokens[i].type=='('&&!cnt)
+                	 {
+				key=false;break;
+			}
 			if (tokens[i].type=='(')
-				left+=1;
-			else if (tokens[i].type==')')
-				left-=1;
-			i++;
-			if (left==0) break;
-				}
-			if (i>q)break;
+				cnt--;
+		        if (tokens[i].type==')')
+				cnt++;
 		}
-	        if (tokens[i].type==NUM10) continue;
-	        if (tokens[i].priority<=min_priority)
+		if (!key) continue;
+				
+		if (tokens[i].priority<=min_priority)
 		{
 			min_priority=tokens[i].priority;
-			pos=i;
+			oper=i;
 		}
 	}
-	return pos;
+	return oper;
 	}
 uint32_t  eval(int p,int q)
 {
@@ -171,11 +173,12 @@ uint32_t  eval(int p,int q)
 		Assert(p>q,"something happened!\n");
 		return 0;
 	}
-	else if (p==q)
+        if (p==q)
 	{
 		uint32_t num=0;
 		if (tokens[p].type==NUM10)
 			sscanf(tokens[p].str,"%d",&num);
+		return num;
 	}
 	else if (check_parentheses(p,q)==true)
 	{
@@ -195,10 +198,11 @@ uint32_t  eval(int p,int q)
 			case '*': return val1*val2;
 			case '/': return val1/val2;
 		
-			default:assert(0);
+			default:break;
 		}
 	}
-	return 0;
+	assert(1);
+	return -123456;
 }
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
