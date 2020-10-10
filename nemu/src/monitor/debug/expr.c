@@ -190,7 +190,7 @@ int eval(int p,int q)
 			default:break;
 		}
 	}
-	assert(1);
+	
 	return 0;
 }
 uint32_t expr(char *e, bool *success) {
