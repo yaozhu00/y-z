@@ -172,6 +172,9 @@ int eval(int p,int q)
 	}
 	else if (p==q)
 	{
+		int num=0;
+		if (tokens[p].type==NUM10)
+			sscanf(tokens[p].str,"%d",&num);
 	}
 	else if (check_parentheses(p,q)==true)
 	{
@@ -179,21 +182,23 @@ int eval(int p,int q)
 	}
 	else
 	{
-		op=the position of dominant operator in token expression;
-		val1=eval(p,op-1);
-		val2=eval(op+1,q);
+		int op=dominant_operator(p,q);
 
-		switch(op_type)
+		int val1=eval(p,op-1);
+		int val2=eval(op+1,q);
+
+		switch(tokens[op].type)
 		{
 			case '+': return val1+val2;
 			case '-': return val1-val2;
 			case '*': return val1*val2;
 			case '/': return val1/val2;
 			case EQ: return val1==val2;
-			case 
-			default:assert(0);
+			default:break;
 		}
 	}
+	assert(1);
+	return -123456;
 }
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
