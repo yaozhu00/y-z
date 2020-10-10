@@ -100,7 +100,6 @@ static bool make_token(char *e) {
                                              strncpy(tokens[nr_token].str,tmp,substr_len);
                                              tokens[nr_token].str[substr_len]='\0';
 					     nr_token++;
-					     break;
 				}
 				position+=substr_len;
 				break;
@@ -118,20 +117,22 @@ static bool make_token(char *e) {
 
 bool check_parentheses(int p,int q)
         {
-         int i,tag=0;   
-         if (tokens[p].type!='('||tokens[q].type!=')')
-              return false;
-         for (i=p;i<=q;i++)
+         int i;   
+         if (tokens[p].type=='('&&tokens[q].type!=')')
          {
-           if (tokens[i].type=='(')
-             tag++;
-           else if (tokens[i].type==')')
-             tag--;
-           if (tag==0&&i<q)return false;
-         }
-        if (tag==0)
-          return true;
-        else return false;
+	       	int lc=0,rc=0;
+        	 for (i=p+1;i<q;i++)
+        	 {
+        	   if (tokens[i].type=='(')
+            		 lc++;
+           	   if (tokens[i].type==')')
+           		 rc++;
+          	   if (rc>lc)return false;
+	       	}
+       	   if (lc==rc)
+    	  	 return true;
+	}
+        return false;
         }
 
 int dominant_operator(int p,int q)
