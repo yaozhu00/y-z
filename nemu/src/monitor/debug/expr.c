@@ -101,9 +101,8 @@ static bool make_token(char *e) {
                                              tokens[nr_token].str[substr_len]='\0';
 					     nr_token++;
 					}
-                                   default:assert(0);
+                                   default:panic("please implement me");
 				}
-				position+=substr_len;
 				break;
 			}
 		}
