@@ -156,7 +156,7 @@ int dominant_operator(int p,int q)
 	}
 	return pos;
 	}
-int eval(int p,int q)
+uint32_t  eval(int p,int q)
 {
 	if (p>q)
 	{
@@ -165,7 +165,7 @@ int eval(int p,int q)
 	}
 	else if (p==q)
 	{
-		int num=0;
+		uint32_t num=0;
 		if (tokens[p].type==NUM10)
 			sscanf(tokens[p].str,"%d",&num);
 	}
@@ -177,8 +177,8 @@ int eval(int p,int q)
 	{
 		int op=dominant_operator(p,q);
 
-		int val1=eval(p,op-1);
-		int val2=eval(op+1,q);
+	 	uint32_t val1=eval(p,op-1);
+		uint32_t val2=eval(op+1,q);
 
 		switch(tokens[op].type)
 		{
@@ -186,11 +186,10 @@ int eval(int p,int q)
 			case '-': return val1-val2;
 			case '*': return val1*val2;
 			case '/': return val1/val2;
-			case EQ: return val1==val2;
-			default:break;
+		
+			default:assert(0);
 		}
 	}
-	
 	return 0;
 }
 uint32_t expr(char *e, bool *success) {
