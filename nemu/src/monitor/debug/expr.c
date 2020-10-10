@@ -147,8 +147,8 @@ int dominant_operator(int p,int q)
 				}
 			if (i>q)break;
 		}
-		else if (tokens[i].type==NUM10) continue;
-		else if (tokens[i].priority<=min_priority)
+	        if (tokens[i].type==NUM10) continue;
+	        if (tokens[i].priority<=min_priority)
 		{
 			min_priority=tokens[i].priority;
 			pos=i;
