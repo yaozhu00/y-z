@@ -5,7 +5,8 @@
  */
 #include <sys/types.h>
 #include <regex.h>
-
+#define max_string_long 32
+#define max_token_num 32
 enum {
 	NOTYPE = 256, EQ ,PLUS,REDUCE, MULTI ,DIVID,LBRACKET,RBRACKET,NUM10
 
@@ -200,7 +201,7 @@ uint32_t  eval(int p,int q)
 		}
 	}
 	assert(1);
-	return 0;
+	return -123456;
 }
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
