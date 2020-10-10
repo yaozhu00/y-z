@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ = 257,PLUS =258,REDUCE = 259, MULTI =200,DIVID =201,LBRACKET=202,RBRACKET=203,NUM10
+	NOTYPE = 256, EQ ,PLUS,REDUCE, MULTI ,DIVID,LBRACKET,RBRACKET,NUM10
 
 	/* TODO: Add more token types */
 
@@ -24,13 +24,13 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE,0},				// spaces
-	{"\\+",PLUS,1},					// plus
+	{"\\+",'+',1},					// plus
 	{"==", EQ},						// equal
-        {"-",REDUCE,0},
-        {"\\*",MULTI,1},
-        {"\\/",DIVID,1},
-        {"\\(",LBRACKET},
-        {"\\)",RBRACKET},
+        {"-",'-',0},
+        {"\\*",'*',1},
+        {"\\/",'/',1},
+        {"\\(",'('},
+        {"\\)",')'},
         {"^[1-9][0-9]*|0$",NUM10,0}
 };
 
@@ -112,13 +112,13 @@ static bool make_token(char *e) {
 bool check_parentheses(int p,int q)
         {
          int i,tag=0;   
-         if (tokens[p].type!=LBRACKET||tokens[q].type!=RBRACKET)
+         if (tokens[p].type!='('||tokens[q].type!=')')
               return false;
          for (i=p;i<=q;i++)
          {
-           if (tokens[i].type==LBRACKET)
+           if (tokens[i].type=='(')
              tag++;
-           else if (tokens[i].type==RBRACKET)
+           else if (tokens[i].type==')')
              tag--;
            if (tag==0&&i<q)return false;
          }
@@ -133,14 +133,14 @@ int dominant_operator(int p,int q)
 	int min_priority=10;
         for (i=p;i<=q;i++)
          {
-          	 if (tokens[i].type==LBRACKET)
+          	 if (tokens[i].type=='(')
                  {
         	        left+=1;
 			i++;
 	        	while (0){
-			if (tokens[i].type==LBRACKET)
+			if (tokens[i].type=='(')
 				left+=1;
-			else if (tokens[i].type==RBRACKET)
+			else if (tokens[i].type==')')
 				left-=1;
 			i++;
 			if (left==0) break;
