@@ -137,7 +137,7 @@ int dominant_operator(int p,int q)
                  {
         	        left+=1;
 			i++;
-	        	while (0){
+	        	while (1){
 			if (tokens[i].type=='(')
 				left+=1;
 			else if (tokens[i].type==')')
