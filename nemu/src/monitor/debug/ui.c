@@ -47,6 +47,8 @@ static int cmd_p(char *args);
 static int cmd_x(char *args);
 
 static int cmd_w(char *args);
+
+static int cmd_d(char *args);
 static struct {
 	char *name;
 	char *description;
@@ -60,6 +62,7 @@ static struct {
         { "x","Calculate the value of the expression and display the content of the address",cmd_x},
         { "p","Calculate the expression",cmd_p},
 	{ "w","Creat a watchpoint",cmd_w},
+	{ "d","Delete a watchpoint",cmd_d},
 	/* TODO: Add more commands */
 
 };
@@ -93,6 +96,8 @@ static int cmd_info(char * args)
             printf("edi: 0x%-10x  %-10d\n",cpu.edi ,cpu.edi);
             printf("esp: 0x%-10x  %-10d\n",cpu.esp,cpu.esp);
            }
+	 else if (strcmp(args,"w")==0)
+		info_wp();
          else 
            printf("The info command need a parameter 'r'or'w'\n");
        } 
@@ -151,6 +156,14 @@ static int cmd_w(char *args)
 	strcpy(f->expr,args);
 	if (!suc)Assert(1,"wrong\n");
 	printf("Value : %d\n",f->val);
+	return 0;
+}
+
+static int cmd_d(char *args)
+{
+	int num;
+	sscanf(args,"%d",&num);
+	delete_wp(num);
 	return 0;
 }
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
