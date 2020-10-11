@@ -45,6 +45,8 @@ static int cmd_info(char *args);
 static int cmd_p(char *args);
 
 static int cmd_x(char *args);
+
+static int cmd_w(char *args);
 static struct {
 	char *name;
 	char *description;
@@ -57,6 +59,7 @@ static struct {
         { "info","Print the register status and the watchpoint information",cmd_info },
         { "x","Calculate the value of the expression and display the content of the address",cmd_x},
         { "p","Calculate the expression",cmd_p},
+	{ "w","Creat a watchpoint",cmd_w},
 	/* TODO: Add more commands */
 
 };
@@ -137,6 +140,19 @@ static int cmd_p(char *args)
        }
        return 0;
 	}
+
+static int cmd_w(char *args)
+{
+	WP *f;
+	bool suc;
+	f=new_wp();
+	printf("Watchpoint %d: %s\n",f->NO,args);
+	f->val=expr(args,&suc);
+	strcpy(f->expr,args);
+	if (!suc)Assert(1,"wrong\n");
+	printf("Value : %d\n",f->val);
+	return 0;
+}
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
 static int cmd_help(char *args) {
