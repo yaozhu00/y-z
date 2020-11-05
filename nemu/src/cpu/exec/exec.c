@@ -25,12 +25,12 @@ make_group(group1_b,
 /* 0x81 */
 make_group(group1_v,
 	inv, inv, inv, inv, 
-	inv, inv, inv, inv)
+	inv, inv, inv, cmp_i2rm_v)
 
 /* 0x83 */
 make_group(group1_sx_v,
 	inv, inv, inv, inv, 
-	inv, inv, inv, inv)
+	inv, inv, inv, cmp_si2rm_v)
 
 /* 0xc0 */
 make_group(group2_i_b,
@@ -79,8 +79,8 @@ make_group(group4,
 
 /* 0xff */
 make_group(group5,
-	inv, inv, inv, inv, 
-	inv, inv, inv, inv)
+	inv, inv, call_rm_v, inv, 
+	inv, inv, push_rm_v, inv)
 
 make_group(group6,
 	inv, inv, inv, inv, 
